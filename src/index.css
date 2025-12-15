@@ -4,8 +4,50 @@
 
 @layer base {
   :root {
+    /* Light Mode Defaults */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 190 100% 40%;
+    /* Darker cyan for contrast on white */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 260 60% 60%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 195 90% 45%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 80%;
+    --input: 240 5.9% 80%;
+    --ring: 190 100% 40%;
+    --radius: 0.75rem;
+
+    /* Glass Effect (Light) */
+    --glass-bg: 0 0% 100%;
+    --glass-border: 240 5.9% 80%;
+    --glass-blur: 20px;
+
+    /* Shadows (Light) */
+    --shadow-glow: 0 0 60px hsl(190 100% 50% / 0.1);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.1);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
     /* Buildoholics Dark Theme - Premium Glassmorphism */
-    /* Background set to transparent (or black fallback) to show LiquidChrome */
     --background: 0 0% 0%;
     --foreground: 210 20% 95%;
 
@@ -32,21 +74,13 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 20% 95%;
 
-    --border: 240 15% 20%;
-    --input: 240 15% 15%;
+    --border: 240 15% 12%;
+    --input: 240 15% 12%;
     --ring: 190 100% 50%;
-
-    --radius: 0.75rem;
 
     /* Glass Effect Variables */
     --glass-bg: 240 15% 10%;
-    --glass-border: 240 15% 25%;
-    --glass-blur: 20px;
-
-    /* Gradient Variables */
-    --gradient-primary: linear-gradient(135deg, hsl(190 100% 50%) 0%, hsl(260 60% 60%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(240 15% 8%) 0%, hsl(240 20% 4%) 100%);
-    --gradient-glow: radial-gradient(ellipse at center, hsl(190 100% 50% / 0.15) 0%, transparent 70%);
+    --glass-border: 240 15% 15%;
 
     /* Shadow Variables */
     --shadow-glow: 0 0 60px hsl(190 100% 50% / 0.3);
@@ -109,5 +143,142 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* Loader CSS */
+.boxes {
+  --size: 32px;
+  --duration: 800ms;
+  height: calc(var(--size) * 2);
+  width: calc(var(--size) * 3);
+  position: relative;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  margin-top: calc(var(--size) * 1.5 * -1);
+  transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg) translateZ(0px);
+}
+
+.boxes .box {
+  width: var(--size);
+  height: var(--size);
+  top: 0;
+  left: 0;
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+.boxes .box:nth-child(1) {
+  transform: translate(100%, 0);
+  animation: box1 var(--duration) linear infinite;
+}
+
+.boxes .box:nth-child(2) {
+  transform: translate(0, 100%);
+  animation: box2 var(--duration) linear infinite;
+}
+
+.boxes .box:nth-child(3) {
+  transform: translate(100%, 100%);
+  animation: box3 var(--duration) linear infinite;
+}
+
+.boxes .box:nth-child(4) {
+  transform: translate(200%, 0);
+  animation: box4 var(--duration) linear infinite;
+}
+
+.boxes .box>div {
+  --background: #5C8DF6;
+  --top: auto;
+  --right: auto;
+  --bottom: auto;
+  --left: auto;
+  --translateZ: calc(var(--size) / 2);
+  --rotateY: 0deg;
+  --rotateX: 0deg;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--background);
+  top: var(--top);
+  right: var(--right);
+  bottom: var(--bottom);
+  left: var(--left);
+  transform: rotateY(var(--rotateY)) rotateX(var(--rotateX)) translateZ(var(--translateZ));
+}
+
+.boxes .box>div:nth-child(1) {
+  --top: 0;
+  --left: 0;
+}
+
+.boxes .box>div:nth-child(2) {
+  --background: #145af2;
+  --right: 0;
+  --rotateY: 90deg;
+}
+
+.boxes .box>div:nth-child(3) {
+  --background: #447cf5;
+  --rotateX: -90deg;
+}
+
+.boxes .box>div:nth-child(4) {
+  --background: #DBE3F4;
+  --top: 0;
+  --left: 0;
+  --translateZ: calc(var(--size) * 3 * -1);
+}
+
+@keyframes box1 {
+
+  0%,
+  50% {
+    transform: translate(100%, 0);
+  }
+
+  100% {
+    transform: translate(200%, 0);
+  }
+}
+
+@keyframes box2 {
+  0% {
+    transform: translate(0, 100%);
+  }
+
+  50% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(100%, 0);
+  }
+}
+
+@keyframes box3 {
+
+  0%,
+  50% {
+    transform: translate(100%, 100%);
+  }
+
+  100% {
+    transform: translate(0, 100%);
+  }
+}
+
+@keyframes box4 {
+  0% {
+    transform: translate(200%, 0);
+  }
+
+  50% {
+    transform: translate(200%, 100%);
+  }
+
+  100% {
+    transform: translate(100%, 100%);
   }
 }

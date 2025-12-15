@@ -4,7 +4,7 @@ import { Hero } from "@/components/sections/Hero";
 import { ServicesOverview } from "@/components/sections/ServicesOverview";
 import { WhyUs } from "@/components/sections/WhyUs";
 import { Process } from "@/components/sections/Process";
-import { ClientsSection } from "@/components/sections/ClientsSection";
+
 import { FinalCTA } from "@/components/sections/FinalCTA";
 
 const Index = () => {
@@ -16,7 +16,7 @@ const Index = () => {
         <ServicesOverview />
         <WhyUs />
         <Process />
-        <ClientsSection />
+
         <FinalCTA />
       </main>
       <Footer />

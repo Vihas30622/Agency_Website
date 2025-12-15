@@ -2,37 +2,8 @@ import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { GlassCard } from "@/components/ui/GlassCard";
-import { Quote } from "lucide-react";
-
-const clients = [
-  { name: "TechStart Inc.", logo: "TS" },
-  { name: "GrowthLab", logo: "GL" },
-  { name: "Velocity Ventures", logo: "VV" },
-  { name: "Nexus Digital", logo: "NX" },
-  { name: "Horizon Tech", logo: "HT" },
-  { name: "Pinnacle AI", logo: "PA" },
-  { name: "Summit Labs", logo: "SL" },
-  { name: "Forge Studio", logo: "FS" },
-];
-
-const testimonials = [
-  {
-    quote: "Buildoholics transformed our online presence completely. Their team understood our vision and delivered beyond expectations.",
-    author: "Sarah Chen",
-    role: "Founder, TechStart Inc.",
-  },
-  {
-    quote: "The speed and quality of execution was impressive. We launched in half the time we expected, and the results speak for themselves.",
-    author: "Marcus Rodriguez",
-    role: "CEO, GrowthLab",
-  },
-  {
-    quote: "Having one team handle everything from website to marketing made scaling so much easier. Highly recommend for any startup.",
-    author: "Emily Watson",
-    role: "Co-founder, Velocity Ventures",
-  },
-];
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 const Clients = () => {
   return (
@@ -48,79 +19,47 @@ const Clients = () => {
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionHeading
               badge="Our Clients"
-              title="Trusted by Ambitious Companies"
-              description="We've partnered with startups and growing businesses across industries to bring their digital visions to life."
+              title="Join Our Journey"
+              description="We are just getting started, and we'd love for you to be a part of our story."
             />
           </div>
         </section>
 
-        {/* Client Logos */}
+        {/* Empty State / Call to Action */}
         <section className="relative py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-6"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="rx-auto max-w-3xl mx-auto rounded-3xl border border-glass-border bg-glass/30 backdrop-blur-md p-12 text-center overflow-hidden relative"
             >
-              {clients.map((client, index) => (
-                <motion.div
-                  key={client.name}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="aspect-[2/1] rounded-xl border border-border bg-card/30 flex items-center justify-center hover:border-primary/30 hover:bg-card/50 transition-all duration-300 group"
-                >
-                  <div className="flex flex-col items-center gap-2">
-                    <span className="text-4xl font-bold text-muted-foreground/40 group-hover:text-primary/60 transition-colors">
-                      {client.logo}
-                    </span>
-                    <span className="text-sm text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                      {client.name}
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
+              {/* Decorative background elements */}
+              <div className="absolute top-0 right-0 p-8 opacity-20">
+                <Sparkles className="w-24 h-24 text-primary" />
+              </div>
+
+              <div className="relative z-10 flex flex-col items-center">
+                <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                  <Sparkles className="w-8 h-8 text-primary" />
+                </div>
+
+                <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Be Glad to Be Our First Customer
+                </h3>
+
+                <p className="text-muted-foreground mb-8 max-w-lg mx-auto text-lg leading-relaxed">
+                  We bring the same level of dedication and expertise to our first client as we will to our hundredth. Experience personalized attention and premium quality service.
+                </p>
+
+                <Button asChild size="lg" variant="glow" className="gap-2">
+                  <a href="/contact">
+                    Start Your Project
+                    <ArrowRight size={18} />
+                  </a>
+                </Button>
+              </div>
             </motion.div>
-          </div>
-        </section>
-
-        {/* Testimonials */}
-        <section className="relative py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <SectionHeading
-              badge="Testimonials"
-              title="What Our Clients Say"
-            />
-
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-              {testimonials.map((testimonial, index) => (
-                <motion.div
-                  key={testimonial.author}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <GlassCard className="h-full p-8">
-                    <Quote className="w-10 h-10 text-primary/30 mb-6" />
-                    <p className="text-foreground leading-relaxed mb-6">
-                      "{testimonial.quote}"
-                    </p>
-                    <div className="pt-6 border-t border-border">
-                      <p className="font-semibold text-foreground">
-                        {testimonial.author}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {testimonial.role}
-                      </p>
-                    </div>
-                  </GlassCard>
-                </motion.div>
-              ))}
-            </div>
           </div>
         </section>
       </main>

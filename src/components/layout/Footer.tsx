@@ -17,9 +17,9 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { name: "Instagram", icon: Instagram, href: "#" },
+  { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/buildoholics" },
   { name: "LinkedIn", icon: Linkedin, href: "#" },
-  { name: "Email", icon: Mail, href: "mailto:hello@buildoholics.com" },
+  { name: "Email", icon: Mail, href: "mailto:buildoholics@gmail.com" },
 ];
 
 export function Footer() {
@@ -99,10 +99,10 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="mailto:hello@buildoholics.com"
+                  href="mailto:buildoholics@gmail.com"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
                 >
-                  hello@buildoholics.com
+                  buildoholics@gmail.com
                 </a>
               </li>
               <li>

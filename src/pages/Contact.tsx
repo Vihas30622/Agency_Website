@@ -16,14 +16,14 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "hello@buildoholics.com",
-    href: "mailto:hello@buildoholics.com",
+    value: "buildoholics@gmail.com",
+    href: "mailto:buildoholics@gmail.com",
   },
   {
     icon: Instagram,
     label: "Instagram",
     value: "@buildoholics",
-    href: "#",
+    href: "https://www.instagram.com/buildoholics/",
   },
   {
     icon: Linkedin,
