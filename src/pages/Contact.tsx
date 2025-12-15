@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import emailjs from "@emailjs/browser";
 import { useState, useRef } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -48,40 +49,20 @@ const Contact = () => {
     }
 
     try {
-      const formData = new FormData(formRef.current);
-      const name = formData.get("name") as string;
-      const email = formData.get("email") as string;
-      const company = formData.get("company") as string;
-      const message = formData.get("message") as string;
-
-      // Create FormData for FormSubmit (it expects form data, not JSON)
-      const submitData = new FormData();
-      submitData.append('name', name);
-      submitData.append('email', email);
-      submitData.append('company', company || "Not provided");
-      submitData.append('message', message);
-      submitData.append('_to', emailConfig.ownerEmail);
-      submitData.append('_subject', emailConfig.emailSubject);
-      submitData.append('_autoresponse', `Hello ${name},\n\n${emailConfig.automatedMessage}`);
-      submitData.append('_autoresponseSubject', "Thank you for contacting Buildoholics!");
-      submitData.append('_template', 'table');
-      submitData.append('_captcha', 'false');
-
-      // Send email using FormSubmit API
-      const response = await fetch(emailConfig.getApiUrl(), {
-        method: 'POST',
-        body: submitData
-      });
-
-      const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.message || 'Failed to send email');
+      if (!emailConfig.serviceId || !emailConfig.templateId || !emailConfig.publicKey) {
+        throw new Error("EmailJS configuration is missing");
       }
+
+      await emailjs.sendForm(
+        emailConfig.serviceId,
+        emailConfig.templateId,
+        formRef.current,
+        emailConfig.publicKey
+      );
 
       setIsLoading(false);
       setIsSubmitted(true);
-      
+
       // Reset form
       formRef.current?.reset();
 
@@ -90,11 +71,22 @@ const Contact = () => {
         description: "We'll get back to you within 24 hours.",
       });
     } catch (error) {
-      console.error("Failed to send email:", error);
-      setIsLoading(false);
+      console.error("EmailJS Error:", error);
+
+      let errorMessage = "Failed to send message. Please try again.";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'object' && error !== null && 'text' in error) {
+        // EmailJS often returns { status: number, text: string }
+        errorMessage = (error as { text: string }).text;
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      }
+
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again or contact us directly.",
+        description: errorMessage,
         variant: "destructive",
       });
     }
@@ -167,7 +159,7 @@ const Contact = () => {
                           <Label htmlFor="name">Name</Label>
                           <Input
                             id="name"
-                            name="name"
+                            name="Name"
                             placeholder="Your name"
                             required
                             className="bg-background/50 border-border focus:border-primary"
@@ -265,7 +257,7 @@ const Contact = () => {
                     Response Time
                   </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">
-                    We typically respond within 24 hours on business days. For urgent matters, 
+                    We typically respond within 24 hours on business days. For urgent matters,
                     reach out on Instagram or LinkedIn.
                   </p>
                 </GlassCard>
