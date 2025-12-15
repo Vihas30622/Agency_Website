@@ -111,7 +111,6 @@ export function Process() {
                   </div>
 
 
-
                   <h3 className="text-xl font-semibold text-foreground mb-3">
                     {step.title}
                   </h3>
