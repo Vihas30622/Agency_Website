@@ -1,119 +1,138 @@
-import type { Config } from "tailwindcss";
+import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
+import { useEffect, useRef } from 'react';
 
-export default {
-  darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
-  prefix: "",
-  theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
-    extend: {
-      fontFamily: {
-        sans: ["Outfit", "system-ui", "sans-serif"],
-      },
-      colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+const vertexShader = `
+attribute vec2 uv;
+attribute vec2 position;
+
+varying vec2 vUv;
+
+void main() {
+  vUv = uv;
+  gl_Position = vec4(position, 0, 1);
+}
+`;
+
+const fragmentShader = `
+precision highp float;
+
+uniform float uTime;
+uniform vec3 uColor;
+uniform vec3 uResolution;
+uniform vec2 uMouse;
+uniform float uAmplitude;
+uniform float uSpeed;
+
+varying vec2 vUv;
+
+void main() {
+  float mr = min(uResolution.x, uResolution.y);
+  vec2 uv = (vUv.xy * 2.0 - 1.0) * uResolution.xy / mr;
+
+  uv += (uMouse - vec2(0.5)) * uAmplitude;
+
+  float d = -uTime * 0.5 * uSpeed;
+  float a = 0.0;
+  for (float i = 0.0; i < 8.0; ++i) {
+    a += cos(i - d - a * uv.x);
+    d += sin(uv.y * i + a);
+  }
+  d += uTime * 0.5 * uSpeed;
+  vec3 col = vec3(cos(uv * vec2(d, a)) * 0.6 + 0.4, cos(a + d) * 0.5 + 0.5);
+  col = cos(col * cos(vec3(d, a, 2.5)) * 0.5 + 0.5) * uColor;
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+interface IridescenceProps {
+  color?: [number, number, number];
+  speed?: number;
+  amplitude?: number;
+  mouseReact?: boolean;
+}
+
+export default function Iridescence({
+  color = [1, 1, 1],
+  speed = 1.0,
+  amplitude = 0.1,
+  mouseReact = true,
+  ...rest
+}: IridescenceProps) {
+  const ctnDom = useRef<HTMLDivElement>(null);
+  const mousePos = useRef({ x: 0.5, y: 0.5 });
+
+  useEffect(() => {
+    if (!ctnDom.current) return;
+    const ctn = ctnDom.current;
+    const renderer = new Renderer();
+    const gl = renderer.gl;
+    gl.clearColor(1, 1, 1, 1);
+
+    let program: Program;
+
+    function resize() {
+      const scale = 1;
+      renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
+      if (program) {
+        program.uniforms.uResolution.value = new Color(
+          gl.canvas.width,
+          gl.canvas.height,
+          gl.canvas.width / gl.canvas.height
+        );
+      }
+    }
+    window.addEventListener('resize', resize, false);
+    resize();
+
+    const geometry = new Triangle(gl);
+    program = new Program(gl, {
+      vertex: vertexShader,
+      fragment: fragmentShader,
+      uniforms: {
+        uTime: { value: 0 },
+        uColor: { value: new Color(...color) },
+        uResolution: {
+          value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        glass: {
-          DEFAULT: "hsl(var(--glass-bg))",
-          border: "hsl(var(--glass-border))",
-        },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        "fade-in": {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "fade-in-left": {
-          "0%": { opacity: "0", transform: "translateX(-20px)" },
-          "100%": { opacity: "1", transform: "translateX(0)" },
-        },
-        "fade-in-right": {
-          "0%": { opacity: "0", transform: "translateX(20px)" },
-          "100%": { opacity: "1", transform: "translateX(0)" },
-        },
-        "glow-pulse": {
-          "0%, 100%": { opacity: "0.5" },
-          "50%": { opacity: "1" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.6s ease-out forwards",
-        "fade-in-left": "fade-in-left 0.6s ease-out forwards",
-        "fade-in-right": "fade-in-right 0.6s ease-out forwards",
-        "glow-pulse": "glow-pulse 3s ease-in-out infinite",
-        float: "float 6s ease-in-out infinite",
-      },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-    },
-  },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+        uMouse: { value: new Float32Array([mousePos.current.x, mousePos.current.y]) },
+        uAmplitude: { value: amplitude },
+        uSpeed: { value: speed }
+      }
+    });
+
+    const mesh = new Mesh(gl, { geometry, program });
+    let animateId: number;
+
+    function update(t: number) {
+      animateId = requestAnimationFrame(update);
+      program.uniforms.uTime.value = t * 0.001;
+      renderer.render({ scene: mesh });
+    }
+    animateId = requestAnimationFrame(update);
+    ctn.appendChild(gl.canvas);
+
+    function handleMouseMove(e: MouseEvent) {
+      const rect = ctn.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = 1.0 - (e.clientY - rect.top) / rect.height;
+      mousePos.current = { x, y };
+      program.uniforms.uMouse.value[0] = x;
+      program.uniforms.uMouse.value[1] = y;
+    }
+    if (mouseReact) {
+      ctn.addEventListener('mousemove', handleMouseMove);
+    }
+
+    return () => {
+      cancelAnimationFrame(animateId);
+      window.removeEventListener('resize', resize);
+      if (mouseReact) {
+        ctn.removeEventListener('mousemove', handleMouseMove);
+      }
+      ctn.removeChild(gl.canvas);
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
+    };
+  }, [color, speed, amplitude, mouseReact]);
+
+  return <div ref={ctnDom} className="w-full h-full" {...rest} />;
+}
