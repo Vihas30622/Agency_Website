@@ -1,17 +1,16 @@
 /**
- * FormSubmit Configuration
+ * EmailJS Configuration
  * 
- * FormSubmit is a FREE form service - no signup, no API keys needed!
- * It automatically sends emails and supports autoresponders.
- * 
- * Setup (super simple):
- * 1. Just add your email address below
- * 2. That's it! FormSubmit handles everything.
+ * This configuration supports dual email sending:
+ * 1. Auto-reply to user (templateId)
+ * 2. Notification to Buildoholics team (buildoholicsTemplateId)
  */
 
 export const emailConfig = {
   serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || '',
-  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
+  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '', // Auto-reply template
+  buildoholicsTemplateId: import.meta.env.VITE_EMAILJS_BUILDOHOLICS_TEMPLATE_ID || 'template_t0ndauf', // Buildoholics notification template
   publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '',
 };
+
 

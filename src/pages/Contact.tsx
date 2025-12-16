@@ -50,16 +50,27 @@ const Contact = () => {
     }
 
     try {
-      if (!emailConfig.serviceId || !emailConfig.templateId || !emailConfig.publicKey) {
+      if (!emailConfig.serviceId || !emailConfig.publicKey) {
         throw new Error("EmailJS configuration is missing");
       }
 
+      // Send email to Buildoholics team (2420030246@klh.edu.in)
       await emailjs.sendForm(
         emailConfig.serviceId,
-        emailConfig.templateId,
+        emailConfig.buildoholicsTemplateId,
         formRef.current,
         emailConfig.publicKey
       );
+
+      // Send auto-reply to user (if template is configured)
+      if (emailConfig.templateId) {
+        await emailjs.sendForm(
+          emailConfig.serviceId,
+          emailConfig.templateId,
+          formRef.current,
+          emailConfig.publicKey
+        );
+      }
 
       setIsLoading(false);
       setIsSubmitted(true);
@@ -90,6 +101,8 @@ const Contact = () => {
         description: errorMessage,
         variant: "destructive",
       });
+
+      setIsLoading(false);
     }
   };
 
