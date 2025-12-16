@@ -1,3 +1,4 @@
+import { GetStartedButton } from "@/components/ui/GradientButton";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -210,12 +211,9 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Button asChild variant="glow" size="lg">
-              <Link to="/contact">
-                Get Started
-                <ArrowRight size={20} />
-              </Link>
-            </Button>
+            <Link to="/contact">
+              <GetStartedButton />
+            </Link>
             <Button asChild variant="outline" size="lg">
               <Link to="/services">View Services</Link>
             </Button>

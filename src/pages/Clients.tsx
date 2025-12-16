@@ -3,6 +3,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/button";
+import { StartYourProjectButton } from "@/components/ui/GradientButton";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 const Clients = () => {
@@ -52,12 +53,9 @@ const Clients = () => {
                   We bring the same level of dedication and expertise to our first client as we will to our hundredth. Experience personalized attention and premium quality service.
                 </p>
 
-                <Button asChild size="lg" variant="glow" className="gap-2">
-                  <a href="/contact">
-                    Start Your Project
-                    <ArrowRight size={18} />
-                  </a>
-                </Button>
+                <a href="/contact">
+                  <StartYourProjectButton />
+                </a>
               </div>
             </motion.div>
           </div>

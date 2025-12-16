@@ -1,3 +1,4 @@
+import { GetStartedButton } from "@/components/ui/GradientButton";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -126,9 +127,9 @@ export function Navbar() {
           {/* CTA Button */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeSwitch />
-            <Button asChild variant="glow" size="lg" className="px-6 py-3 text-base">
-              <Link to="/contact">Get Started</Link>
-            </Button>
+            <Link to="/contact">
+              <GetStartedButton />
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -169,11 +170,9 @@ export function Navbar() {
                     {link.name}
                   </Link>
                 ))}
-                <Button asChild variant="glow" className="mt-2">
-                  <Link to="/contact" onClick={() => setIsOpen(false)}>
-                    Get Started
-                  </Link>
-                </Button>
+                <Link to="/contact" onClick={() => setIsOpen(false)} className="mt-2 self-start">
+                  <GetStartedButton />
+                </Link>
               </div>
             </motion.div>
           )}

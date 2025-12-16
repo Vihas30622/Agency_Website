@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/button";
+import { LetsTalkButton } from "@/components/ui/GradientButton";
 import {
   Globe,
   Layout,
@@ -119,12 +120,9 @@ const Services = () => {
               <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
                 Every business is unique. Let's discuss your specific needs and create a tailored solution that fits your goals and budget.
               </p>
-              <Button asChild variant="glow" size="lg">
-                <Link to="/contact">
-                  Let's Talk
-                  <ArrowRight size={20} />
-                </Link>
-              </Button>
+              <Link to="/contact">
+                <LetsTalkButton />
+              </Link>
             </motion.div>
           </div>
         </section>

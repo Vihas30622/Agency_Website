@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { StartProjectButton } from "@/components/ui/GradientButton";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -118,12 +119,9 @@ const Products = () => {
                             <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
                                 Let's collaborate to bring your vision to life with our expert engineering team.
                             </p>
-                            <Button asChild variant="glow" size="lg">
-                                <a href="/contact">
-                                    Start a Project
-                                    <ArrowRight size={20} />
-                                </a>
-                            </Button>
+                            <a href="/contact">
+                                <StartProjectButton />
+                            </a>
                         </motion.div>
                     </div>
                 </section>

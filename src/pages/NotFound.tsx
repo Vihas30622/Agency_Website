@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Home, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ContactUsButton } from "@/components/ui/GradientButton";
 
 const NotFound = () => {
   const location = useLocation();
@@ -41,12 +42,9 @@ const NotFound = () => {
               Back to Home
             </Link>
           </Button>
-          <Button asChild variant="outline">
-            <Link to="/contact">
-              <ArrowLeft size={18} />
-              Contact Us
-            </Link>
-          </Button>
+          <Link to="/contact">
+            <ContactUsButton />
+          </Link>
         </div>
       </motion.div>
     </div>

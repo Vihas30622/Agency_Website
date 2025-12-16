@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { LetsBuildTogetherButton } from "@/components/ui/GradientButton";
 import emailjs from "@emailjs/browser";
 import { useState, useRef } from "react";
 import { Navbar } from "@/components/layout/Navbar";
@@ -197,22 +198,9 @@ const Contact = () => {
                           className="bg-background/50 border-border focus:border-primary resize-none"
                         />
                       </div>
-                      <Button
-                        type="submit"
-                        variant="glow"
-                        size="lg"
-                        className="w-full"
-                        disabled={isLoading}
-                      >
-                        {isLoading ? (
-                          "Sending..."
-                        ) : (
-                          <>
-                            Let's Build Together
-                            <Send size={18} />
-                          </>
-                        )}
-                      </Button>
+                      <div className="w-full">
+                        <LetsBuildTogetherButton type="submit" />
+                      </div>
                     </form>
                   )}
                 </GlassCard>
